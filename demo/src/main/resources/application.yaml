@@ -1,0 +1,15 @@
+spring:
+  batch:
+    job:
+      name: ${job.name:NONE}  # 'names' (복수형)가 삭제되고 'name' (단수형)으로 변경됨
+      enabled: true            # 자동 실행을 원할 경우 (기본값 true)
+    jdbc:
+      initialize-schema: ALWAYS # Spring Boot 3.x 이상에서는 이 속성을 사용 (기존 spring.batch.initialize-schema 삭제됨)
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/spring_batch
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234
+  sql:
+    init:
+      mode: always            
