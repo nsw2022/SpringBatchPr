@@ -1,4 +1,4 @@
-package com.example.SpringBatchTutorial.job;
+package com.example.SpringBatchTutorial.job.Hellowrold;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.job.Job;
@@ -7,11 +7,14 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.infrastructure.repeat.RepeatStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+/**
+ * desc: Hello World 를 출력
+ * run: --spring.batch.job.name=helloWorldJob 를 편집인자에 넘김
+ */
 @Configuration
 @RequiredArgsConstructor
 public class HelloWorldJobConfig {
