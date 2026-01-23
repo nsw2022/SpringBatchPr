@@ -1,25 +1,27 @@
 package com.example.SpringBatchTutorial.job.ValidatedParam;
 
+import com.example.SpringBatchTutorial.job.ValidatedParam.Validator.FileParamValidator;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.Nullable;
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.job.parameters.CompositeJobParametersValidator;
 import org.springframework.batch.core.job.parameters.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.Step;
-import org.springframework.batch.core.step.StepContribution;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import java.util.Arrays;
+
 /**
- * desc: Hello World 를 출력
- * run: --spring.batch.job.name=validateParamJob 를 편집인자에 넘김
+ * desc: 파일 이름 파라미터 전달 그리고 검증
+ * run: --spring.batch.job.name=validateParamJob -fileName=test.csv
  */
 @Configuration
 @RequiredArgsConstructor
@@ -40,9 +42,15 @@ public class ValidatedParamJobConfig {
          */
         return new JobBuilder("validateParamJob", jobRepository)
                 .incrementer(new RunIdIncrementer()) // 실행할 때마다 JobParameter에 run.id를 증가시켜 재실행 가능하게 함
-                // .validator(new FileParamValidator()) // (참고) 검증 로직이 필요하면 여기에 validator를 추가합니다.
+                .validator(new FileParamValidator()) // 검증 로직이 필요하면 여기에 validator를 추가합니다.
                 .start(validateParamJobStep()) // 첫 번째 Step 시작
                 .build();
+    }
+
+    private CompositeJobParametersValidator multipleValidator(){
+        CompositeJobParametersValidator validator = new CompositeJobParametersValidator();
+        validator.setValidators(Arrays.asList(new FileParamValidator())); // 여러개의 검증 클래스를 변수로 할당가능
+        return  validator;
     }
 
     @Bean
@@ -113,8 +121,16 @@ public class ValidatedParamJobConfig {
 
         return jobBuilderFactory.get("validateParamJob")
                 .incrementer(new RunIdIncrementer())
+                //.validator(new FileParamValidator()) // 여기서 정의해줘도 되지만 재활용성을 위해 별도의 클래스로 제작 job.ValidatedParam.FileParamValidator
+                .validator(multipleValidator)
                 .start(validateParamJobStep())
                 .build();
+    }
+
+    private CompositeJobParametersValidator multipleValidator(){
+        CompositeJobParametersValidator validator = new CompositeJobParametersValidator();
+        validator.setValidators(Arrays.asList(new FileParamValidator()));
+         return  validator;
     }
 
     @JobScope
@@ -134,7 +150,10 @@ public class ValidatedParamJobConfig {
 
     @StepScope
     @Bean
-    public Tasklet validateParamTasklet() {
+    public Tasklet validateParamTasklet(@Value("#{jobParameters['fileName']} String fileName) {
+          //System.out.println(fileName);
+          // 여기서 파일명을 받아 작업할 수 있지만
+          // Tasklet 까지 오기 전 Job이 실행할 때 검증할 수 있도록 Validator 를 제공을 함 위쪽의 validateParamJob 메서드로 이동
 
           [Tasklet 구현]
           익명 클래스 방식으로 구현.
