@@ -88,7 +88,18 @@ public class TrMigrationConfig {
                 .repository(ordersRepository)
                 .methodName("findAll") // 레포지토리의 메서드 명
                 .pageSize(5)           // 페이지 단위로 읽어올 사이즈
+
+                // [arguments 설명]
+                // 호출할 메서드(findAll)에 전달할 인자값을 리스트 형태로 설정함.
+                // 1. 현재 findAll은 파라미터가 없으므로 Collections.emptyList()를 사용함.
+                // 2. 만약 findByStatus(String status)처럼 인자가 필요한 메서드를 사용한다면
+                //    .arguments(Arrays.asList("COMPLETED")) 와 같이 값을 넘겨주어야 함.
                 .arguments(Collections.emptyList())
+
+                // [sorts 설명]
+                // 페이징 기반 리더에서 정렬은 '필수'입니다.
+                // 정렬 기준이 없으면 페이지를 넘길 때 데이터 순서가 뒤바뀌어
+                // 중복 읽기나 누락이 발생할 수 있으므로, 고유한 값(id 등)으로 반드시 정렬해야 합니다.
                 .sorts(Collections.singletonMap("id", Sort.Direction.ASC)) // 정렬 필수
                 .build();
     }
