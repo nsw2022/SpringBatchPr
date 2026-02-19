@@ -1,0 +1,6 @@
+AbduKa00=Abdul-Jabbar=rb=30
+AbduRa00=Abdullah=rb=27
+AberWa00=Abercrombie=rb=44
+AbraDa00=Abramowicz=wr=59
+AdamBo00=Adams=te=57
+AdamCh00=Adams=wr=23
