@@ -6,3 +6,4 @@
 3. [배치 작업 실행 전, 후 로그 추가를 위한 리스너 #4](https://github.com/nsw2022/SpringBatchPr/issues/4)
 4. [DB데이터 이관하기 (DB데이터 읽고 다시 쓰기) - 1 #5](https://github.com/nsw2022/SpringBatchPr/issues/5)
 5. [DB데이터 이관하기 (DB데이터 읽고 다시 쓰기) - 2 #6](https://github.com/nsw2022/SpringBatchPr/issues/6)
+6. [파일 읽기와 쓰기 #7](https://github.com/nsw2022/SpringBatchPr/issues/7)
